@@ -239,7 +239,7 @@ def create_lmdb():
 
 
 def main():
-    assert six.PY3
+    #assert six.PY3
     assert os.path.isfile(os.path.join(settings.CAFFE_ROOT, 'python', 'caffe', '_caffe.so')), 'please compile pycaffe'
     random.seed(0)
 

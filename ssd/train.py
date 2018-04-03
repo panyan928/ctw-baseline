@@ -11,8 +11,8 @@ import subprocess
 
 
 def main():
-    assert os.path.isfile(settings.PRETRAIN_MODEL), 'please download pretrain model {}'.format(settings.PRETRAIN_MODEL)
-    assert os.path.isfile(os.path.join(settings.CAFFE_ROOT, 'build/tools/caffe')), 'please build caffe'
+    #assert os.path.isfile(settings.PRETRAIN_MODEL), 'please download pretrain model {}'.format(settings.PRETRAIN_MODEL)
+    #assert os.path.isfile(os.path.join(settings.CAFFE_ROOT, 'build/tools/caffe')), 'please build caffe'
 
     exe = 'python2'
     script = os.path.join('ssd_hardcode', 'ssd_pascal_512.py')

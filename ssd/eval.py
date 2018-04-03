@@ -20,6 +20,7 @@ env = {
 
 
 def last_caffemodel(backup_root):
+    print('last_caffemodel')
     if not os.path.isdir(backup_root):
         return None
     r = re.compile(r'^.*_iter_(\d+)\.caffemodel$')
@@ -41,17 +42,15 @@ def eval_ssd(split_id, tid):
     test_list = darknet_tools.append_before_ext(settings.TEST_LIST, '.{}'.format(split_id))
     args = [exe, deploy, model, test_list]
 
-    if not os.path.isdir(os.path.dirname(settings.TEST_RESULTS_OUT)):
-        os.makedirs(os.path.dirname(settings.TEST_RESULTS_OUT))
     stdout_reopen = darknet_tools.append_before_ext(settings.TEST_RESULTS_OUT, '.{}'.format(split_id))
-
+    print('std:',stdout_reopen)
     new_env = os.environ.copy()
     if 'CUDA_VISIBLE_DEVICES' in new_env:
         env['CUDA_VISIBLE_DEVICES'] = new_env['CUDA_VISIBLE_DEVICES']
     if 1 != settings.TEST_NUM_GPU:
         env['CUDA_VISIBLE_DEVICES'] = '{}'.format(tid % settings.TEST_NUM_GPU)
     new_env.update(env)
-
+    print(new_env)
     for k, v in env.items():
         print('{}={}'.format(k, v), end=' ')
     print(*args)
@@ -64,6 +63,7 @@ def main():
     with open(settings.TEST_LIST) as f:
         ls = f.read().splitlines()
     def write_ssd_test_data(split_id):
+	print('run write_ssd_test_data')
         test_list = darknet_tools.append_before_ext(settings.TEST_LIST, '.{}'.format(split_id))
         with open(test_list, 'w') as f:
             for line in ls[split_id * len(ls) // settings.TEST_SPLIT_NUM:(1 + split_id) * len(ls) // settings.TEST_SPLIT_NUM]:
@@ -71,7 +71,7 @@ def main():
                 f.write('\n')
     for i in range(settings.TEST_SPLIT_NUM):
         write_ssd_test_data(i)
-    common_tools.multithreaded_tid(eval_ssd, range(settings.TEST_SPLIT_NUM), num_thread=12)
+    common_tools.multithreaded_tid(eval_ssd, range(settings.TEST_SPLIT_NUM), num_thread=2)
 
 
 if __name__ == '__main__':

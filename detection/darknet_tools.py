@@ -51,11 +51,26 @@ def last_backup(backup_root):
 def get_crop_bboxes(imshape, cropshape, cropoverlap):
     crop_num_y = int(math.ceil((imshape[0] - cropshape[0]) / (cropshape[0] - cropoverlap[0]) + 1))
     crop_num_x = int(math.ceil((imshape[1] - cropshape[1]) / (cropshape[1] - cropoverlap[1]) + 1))
-    for i in range(crop_num_y):
-        for j in range(crop_num_x):
-            ylo = int(round(i * (imshape[0] - cropshape[0]) / (crop_num_y - 1)))
-            xlo = int(round(j * (imshape[1] - cropshape[1]) / (crop_num_x - 1)))
-            yield {'name': '{}_{}'.format(i, j), 'xlo': xlo, 'ylo': ylo}
+# crop_num_y == 1 , image size< crop size
+# kaolv tupian xiaoyu qiege size 
+    if crop_num_y==1:
+	if crop_num_x==1:
+	    yield{'name':'{}_{}'.format(0,0),'xlo':0, 'ylo':0}
+	else:
+	    for j in range(crop_num_x):
+		xlo = int(round(j * (imshape[1] - cropshape[1]) / (crop_num_x - 1)))
+                yield {'name': '{}_{}'.format(0, j), 'xlo': xlo, 'ylo':0}
+    else:
+	if crop_num_x==1:
+            for j in range(crop_num_y):
+                ylo = int(round(j * (imshape[0] - cropshape[0]) / (crop_num_y - 1)))
+                yield {'name': '{}_{}'.format(j, 0), 'xlo': 0, 'ylo': ylo}
+	else:
+	    for i in range(crop_num_y):
+		for j in range(crop_num_x):
+		    ylo = int(round(i * (imshape[0] - cropshape[0]) / (crop_num_y - 1)))
+		    xlo = int(round(j * (imshape[1] - cropshape[1]) / (crop_num_x - 1)))
+		    yield {'name': '{}_{}'.format(i, j), 'xlo': xlo, 'ylo': ylo}
 
 
 def append_before_ext(filepath, s):
