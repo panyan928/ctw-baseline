@@ -41,7 +41,8 @@ def eval_ssd(split_id, tid):
     model = last_caffemodel(os.path.join(settings.PRODUCTS_ROOT, 'models', 'SSD_512x512'))
     test_list = darknet_tools.append_before_ext(settings.TEST_LIST, '.{}'.format(split_id))
     args = [exe, deploy, model, test_list]
-
+    if not os.path.isdir(os.path.dirname(settings.TEST_RESULTS_DIR)):
+	os.makedirs(os.path.dirname(settings.TEST_RESULTS_DIR))
     stdout_reopen = darknet_tools.append_before_ext(settings.TEST_RESULTS_OUT, '.{}'.format(split_id))
     print('std:',stdout_reopen)
     new_env = os.environ.copy()
