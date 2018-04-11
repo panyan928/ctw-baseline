@@ -40,7 +40,7 @@ info.json中包含test image list，从中依次读取test image进行crop
 
  添加：根据merge结果，用opencv画出BoundingBox
  
- ###步骤
+### 步骤
  
 1. 生成`data/annotations/info.json`,包含测试图片列表
 
