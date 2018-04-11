@@ -23,10 +23,22 @@ Please visit [https://ctwdataset.github.io/](https://ctwdataset.github.io/) to g
 ## Change Record
 * `detection/darknet_tools.py`：
 
-  根据cropshape, cropoverlap计算crop的坐标值，crop后的大小固定为128*128,256*256,512*512
+根据cropshape, cropoverlap计算crop的坐标值，crop后的大小固定为128*128,256*256,512*512
   
   cropoverlap 决定图片切块后最小的重叠区域，实际重叠部分往往比这个大
   
   修改：
     当image size小于cropshape时，直接resize成cropshape
+    
+* `detection/prepare_test_data.py`:
+
+info.json中包含test image list，从中依次读取test image进行crop
+
+修改：注释统一size设置，读取图片size，根据size计算crop
+
+* `ssd/merge_result.py`:
+
+ 添加：根据merge结果，用opencv画出BoundingBox
+
+
 
