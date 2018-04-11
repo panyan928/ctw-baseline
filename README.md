@@ -54,5 +54,33 @@ info.json中包含test image list，从中依次读取test image进行crop
 
 6. run `ssd/eval.py`
 
+## 制作汉字验证码数据集
+
+* `create_cates_json.py`:
+
+首先生成`train.json`，格式与原作者的类似，删除了一部分，主要为了根据`text`统计汉字
+
+{
+ >annotations:{
+ 
+ >>text:
+ 
+ >>adjusted_box:
+ 
+ >>is_chinese:
+ 
+ >}
+ 
+ >file_name:
+ 
+ >image_id:
+ 
+}
+
+再根据`train.json`中的`text`统计所有出现的汉字（因为编码问题去除了字母），生成`cates.json`，为每个汉字对应一个序号
+
+* `create_xml.py`:
+
+根据数据文件名生成对应的标注，类别为`cates.json`中对应的序号
 
 
